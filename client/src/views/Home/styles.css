@@ -1,0 +1,7 @@
+.service-container {
+  display: flex;
+}
+
+.section-service {
+  justify-content: center;
+}

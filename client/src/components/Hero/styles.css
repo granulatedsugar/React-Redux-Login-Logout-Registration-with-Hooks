@@ -1,0 +1,31 @@
+.hero {
+  max-height: 50vh;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 600px) {
+  .hero {
+    height: 100%;
+  }
+
+  .hero-text {
+    display: none;
+  }
+}
+
+.section-title {
+  font-size: x-large;
+}
+
+.slider-button {
+  text-decoration: none;
+  color: #fff;
+  background-color: rgb(81, 128, 152);
+  border-radius: 0;
+}
+
+.slider-button:hover {
+  color: #fff;
+  background-color: transparent;
+  border: rgb(81, 128, 152) 1px solid;
+}
