@@ -1,7 +1,5 @@
 .service-container {
   display: flex;
-}
-
-.section-service {
-  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
 }

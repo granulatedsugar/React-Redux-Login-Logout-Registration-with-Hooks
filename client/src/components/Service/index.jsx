@@ -9,15 +9,12 @@ const Service = () => {
     <>
       {services.map((service) => (
         <Card
-          style={{ width: "18rem", margin: "20px", padding: "0px" }}
+          style={{ width: "9.5rem", padding: "0px" }}
           className="service-card"
         >
-          <Card.Img className="service-image" variant="top" src={service.img} />
+          <Card.Img variant="top" src={service.img} />
           <Card.Body>
-            <Card.Title>{service.title}</Card.Title>
-            <Card.Text>SKU:{service.sku}</Card.Text>
-            <Card.Text>Starts from ${service.startPrice}.00</Card.Text>
-            <Button variant="primary">Customize</Button>
+            <Card.Title className="card-title">{service.title}</Card.Title>
           </Card.Body>
         </Card>
       ))}

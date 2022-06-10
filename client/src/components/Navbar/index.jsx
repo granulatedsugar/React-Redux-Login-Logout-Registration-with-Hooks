@@ -35,7 +35,7 @@ const NavigationBar = () => {
               className="mobile-toggle"
               aria-controls="responsive-navbar-nav"
             />
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/">
               <img
                 src={logo}
                 width="auto"

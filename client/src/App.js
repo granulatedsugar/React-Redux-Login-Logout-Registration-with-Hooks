@@ -5,6 +5,7 @@ import ThemeProvider from "react-bootstrap/ThemeProvider";
 import Signup from "./views/Signup";
 import Home from "./views/Home";
 import NavigationBar from "./components/Navbar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -13,8 +14,12 @@ function App() {
     >
       <div className="App">
         <NavigationBar />
-        <Home />
-        {/* <Signup /> */}
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Signup />} />
+          </Routes>
+        </Router>
       </div>
     </ThemeProvider>
   );

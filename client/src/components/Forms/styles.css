@@ -1,0 +1,26 @@
+.form-control {
+  border: 0 !important;
+  border-bottom: #000 1px solid !important;
+  border-radius: 0 !important;
+  font-size: small;
+}
+
+.register-form {
+  max-width: 800px;
+}
+
+.terms-check {
+  font-size: small;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 10px 0 10px 0;
+  border: 0;
+  border-radius: 0;
+  background-color: rgb(81, 128, 152);
+}
+
+.btn-register:hover {
+  background-color: rgb(139, 186, 210);
+}

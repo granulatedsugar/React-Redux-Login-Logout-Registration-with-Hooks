@@ -9,7 +9,7 @@ const Hero = () => {
       {slider.map((slide) => (
         <Carousel.Item>
           <Row style={{ background: `#${slide.bg}` }}>
-            <Col className="m-auto">
+            <Col className="m-auto hero-img">
               <img className="d-block hero" src={slide.img} alt="First slide" />
             </Col>
             <Col
@@ -18,7 +18,16 @@ const Hero = () => {
             >
               <h3>{slide.title}</h3>
               <p>{slide.subTitle}</p>
-              <Button className="slider-button" variant="link">
+              <Button
+                className="slider-button"
+                variant="link"
+                style={{
+                  color: `${slide.theme === "dark" ? "#000" : "#fff"}`,
+                  backgroundColor: `${
+                    slide.theme === "dark" ? "#FFF" : "#000"
+                  }`,
+                }}
+              >
                 Start a repair
               </Button>
             </Col>

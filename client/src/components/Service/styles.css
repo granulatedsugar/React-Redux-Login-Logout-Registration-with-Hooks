@@ -1,0 +1,27 @@
+.card {
+  border-radius: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .card {
+    width: 18rem !important
+    ;
+  }
+}
+
+.card-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 0 5px 0;
+}
+
+.card-body {
+  padding: 0 0 10px 0;
+}
+
+.card-img-top {
+  height: 100%;
+  padding: 20px 0 20px 0;
+  object-fit: cover;
+}

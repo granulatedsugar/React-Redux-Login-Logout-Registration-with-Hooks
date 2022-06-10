@@ -11,11 +11,17 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   //SAVE USER TO DATABASE
   User.create({
-    username: req.body.username,
     password: bcrypt.hashSync(req.body.password, 8),
     email: req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
+    country: req.body.country,
+    street: req.body.street,
+    apt: req.body.apt,
+    city: req.body.city,
+    state: req.body.state,
+    zip: req.body.zip,
+    phone: req.body.phone,
   })
     .then((user) => {
       if (req.body.roles) {
@@ -49,7 +55,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      username: req.body.username,
+      email: req.body.email,
     },
   })
     .then((user) => {
@@ -80,8 +86,8 @@ exports.signin = (req, res) => {
         }
         res.status(200).send({
           id: user.id,
-          username: user.username,
           email: user.email,
+          firstName: user.firstName,
           roles: authorities,
           accessToken: token,
         });
