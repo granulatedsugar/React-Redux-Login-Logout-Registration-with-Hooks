@@ -44,3 +44,8 @@
     display: none;
   }
 }
+
+.canvas-img {
+  height: auto;
+  width: 400px;
+}

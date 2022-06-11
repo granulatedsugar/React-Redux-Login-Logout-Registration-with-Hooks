@@ -2,11 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 var corsOptions = {
-  origin: "http://localhost:8081",
+  origin: "http://localhost:3000",
 };
 
-app.use(cors(corsOptions));
-app.use(express.json()); // parse request of content type - application/json
+app.use(cors());
+app.use(express.json(corsOptions)); // parse request of content type - application/json
 app.use(express.urlencoded({ extended: true })); // parse request of content type - application/x-www-form-urlencoded
 app.get("/", (req, res) => {
   res.json({ message: "Hello! Server initiated." });

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -6,20 +7,36 @@ import Button from "react-bootstrap/Button";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./styles.css";
 import axios from "axios";
+import { register as registration } from "../../redux/actions/auth";
 
 const GenericForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [country, setCounrtry] = useState("");
+  const [street, setStreet] = useState("");
+  const [apt, setApt] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [phone, setPhone] = useState("");
   const [countries, setCountries] = useState([]);
+  const [successful, setSuccessful] = useState(false);
+  const { message } = useSelector((state) => state.message);
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
     street: Yup.string().required("Street Address is required"),
-    apt: Yup.string().required("Apt / Floor/ Suite is required"),
     country: Yup.string().required("Country is required"),
     city: Yup.string().required("City is required"),
-    zip: Yup.number().required("Zip / zip Code is required"),
-    state: Yup.string().required("State is required"),
-    phone: Yup.number().required("Phone is required"),
+    zip: Yup.number().typeError("Zip / Postal Code is required"),
+    state: Yup.string().required("State / Province is required"),
+    phone: Yup.number()
+      .typeError("A valid phone number is requried")
+      .min(10, "Must be 10 characters"),
     email: Yup.string()
       .required("Email is required.")
       .email("Email is invalid"),
@@ -39,13 +56,36 @@ const GenericForm = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(JSON.stringify(data, null, 2));
+    setSuccessful(false);
+    dispatch(
+      registration(
+        email,
+        password,
+        firstName,
+        lastName,
+        country,
+        street,
+        apt,
+        city,
+        state,
+        zip,
+        phone
+      )
+    )
+      .then(() => {
+        setSuccessful(true);
+      })
+      .catch(() => {
+        setSuccessful(false);
+      });
   };
 
   useEffect(() => {
     const countryList = async () => {
       try {
-        const res = await axios.get(`https://restcountries.com/v3.1/all`);
+        const res = await axios.get(
+          `https://raw.githubusercontent.com/mledoze/countries/master/dist/countries.json`
+        );
         setCountries(res.data);
       } catch (err) {}
     };
@@ -77,6 +117,7 @@ const GenericForm = () => {
                 placeholder="*Email address"
                 {...register("email")}
                 className={`shadow-none ${errors.email ? "is-invalid" : ""}`}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <div className="invalid-feedback">{errors.email?.message}</div>
             </Form.Group>
@@ -89,14 +130,10 @@ const GenericForm = () => {
                 placeholder="*Password"
                 {...register("password")}
                 className={`shadow-none ${errors.password ? "is-invalid" : ""}`}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </Form.Group>
-            <p style={{ fontSize: 12 }}>
-              Your password must contain at least 6 characters without spaces
-              with letters, at least one number, one capital letter, and one
-              special character.
-            </p>
           </Col>
         </Row>
         <Row>
@@ -110,6 +147,7 @@ const GenericForm = () => {
                 className={`shadow-none ${
                   errors.firstName ? "is-invalid" : ""
                 }`}
+                onChange={(e) => setFirstName(e.target.value)}
               />
               <div className="invalid-feedback">
                 {errors.firstName?.message}
@@ -123,6 +161,7 @@ const GenericForm = () => {
                 placeholder="*Last Name"
                 {...register("lastName")}
                 className={`shadow-none ${errors.lastName ? "is-invalid" : ""}`}
+                onChange={(e) => setLastName(e.target.value)}
               />
               <div className="invalid-feedback">{errors.lastName?.message}</div>
             </Form.Group>
@@ -134,6 +173,7 @@ const GenericForm = () => {
             className={`shadow-none form-control ${
               errors.country ? "is-invalid" : ""
             }`}
+            onChange={(e) => setCounrtry(e.target.value)}
           >
             <option>Philippines</option>
             <option>United States</option>
@@ -149,17 +189,18 @@ const GenericForm = () => {
             placeholder="*Street Address (No P.O. Box)"
             {...register("street")}
             className={`shadow-none ${errors.street ? "is-invalid" : ""}`}
+            onChange={(e) => setStreet(e.target.value)}
           />
           <div className="invalid-feedback">{errors.street?.message}</div>
         </Form.Group>
         <Form.Group className="mb-5" controlId="formBasicText">
           <Form.Control
             type="text"
-            placeholder="*Apt / Floor / Suite"
+            placeholder="Apt / Floor / Suite"
             {...register("apt")}
-            className={`shadow-none ${errors.apt ? "is-invalid" : ""}`}
+            className={`shadow-none`}
+            onChange={(e) => setApt(e.target.value)}
           />
-          <div className="invalid-feedback">{errors.apt?.message}</div>
         </Form.Group>
         <Row>
           <Col>
@@ -169,6 +210,7 @@ const GenericForm = () => {
                 placeholder="*City"
                 {...register("city")}
                 className={`shadow-none ${errors.city ? "is-invalid" : ""}`}
+                onChange={(e) => setCity(e.target.value)}
               />
               <div className="invalid-feedback">{errors.city?.message}</div>
             </Form.Group>
@@ -178,6 +220,7 @@ const GenericForm = () => {
                 placeholder="*Zip / Postal Code"
                 {...register("zip")}
                 className={`shadow-none ${errors.zip ? "is-invalid" : ""}`}
+                onChange={(e) => setZip(e.target.value)}
               />
               <div className="invalid-feedback">{errors.zip?.message}</div>
             </Form.Group>
@@ -189,6 +232,7 @@ const GenericForm = () => {
                 placeholder="*State / Province"
                 {...register("state")}
                 className={`shadow-none ${errors.state ? "is-invalid" : ""}`}
+                onChange={(e) => setState(e.target.value)}
               />
               <div className="invalid-feedback">{errors.state?.message}</div>
             </Form.Group>
@@ -198,6 +242,7 @@ const GenericForm = () => {
                 placeholder="*Phone"
                 {...register("phone")}
                 className={`shadow-none ${errors.phone ? "is-invalid" : ""}`}
+                onChange={(e) => setPhone(e.target.value)}
               />
               <div className="invalid-feedback">{errors.phone?.message}</div>
             </Form.Group>
@@ -209,9 +254,23 @@ const GenericForm = () => {
             label="I have read the privacy policy and consent to the processing of my personal data in order for my account to be created. I wish to receive promotions and coupons. I wish to receive Fashion & Accessories news."
           />
         </Form.Group>
-        <Button variant="primary" type="submit" className="btn-register mb-5">
-          CREATE AN ACCOUNT
-        </Button>
+        <Row className="m-auto">
+          <Button variant="primary" type="submit" className="btn-register mb-5">
+            CREATE AN ACCOUNT
+          </Button>
+        </Row>
+        {message && (
+          <div className="form-group">
+            <div
+              className={
+                successful ? "alert alert-success" : "alert alert-danger"
+              }
+              role="alert"
+            >
+              {message}
+            </div>
+          </div>
+        )}
       </Form>
       <p className="terms-check">
         By clicking on “Create an Account” you confirm you have read the Privacy
