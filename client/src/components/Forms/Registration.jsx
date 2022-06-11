@@ -8,6 +8,7 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import "./styles.css";
 import axios from "axios";
 import { register as registration } from "../../redux/actions/auth";
+import toast, { Toaster } from "react-hot-toast";
 
 const GenericForm = () => {
   const [email, setEmail] = useState("");
@@ -261,13 +262,24 @@ const GenericForm = () => {
         </Row>
         {message && (
           <div className="form-group">
-            <div
-              className={
-                successful ? "alert alert-success" : "alert alert-danger"
-              }
-              role="alert"
-            >
-              {message}
+            <div>
+              {successful ? toast.success(message) : toast.error(message)}
+              <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                toastOptions={{
+                  // Define default options
+                  className: "",
+                  duration: 5000,
+                  style: {
+                    background: "#363636",
+                    color: "#fff",
+                  },
+                }}
+              />
             </div>
           </div>
         )}

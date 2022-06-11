@@ -13,7 +13,6 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [successful, setSuccessful] = useState(false);
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
@@ -38,21 +37,25 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    setSuccessful(false);
     setLoading(true);
     dispatch(login(email, password))
       .then(() => {
-        setSuccessful(true);
         props.history.push("/profile");
         window.location.reload();
       })
       .catch(() => {
         setLoading(false);
-        setSuccessful(false);
       });
+
+    notify();
   };
 
   //TODO : SETUP TOAST
+  const notify = () => {
+    return message === "200"
+      ? toast.success("Account verified!")
+      : toast.error("Something went wrong. Please try again.");
+  };
 
   return (
     <Form>
@@ -100,29 +103,22 @@ const Login = (props) => {
           SIGN IN
         </Button>
       </Row>
-
-      {/* TODO */}
-      {message && (
-        <div className="form-group">
-          {successful ? toast.success("success") : toast.error("fail")}
-          <Toaster
-            position="top-center"
-            reverseOrder={false}
-            gutter={8}
-            containerClassName=""
-            containerStyle={{}}
-            toastOptions={{
-              // Define default options
-              className: "",
-              duration: 5000,
-              style: {
-                background: "#363636",
-                color: "#fff",
-              },
-            }}
-          />
-        </div>
-      )}
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          // Define default options
+          className: "",
+          duration: 5000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
     </Form>
   );
 };
